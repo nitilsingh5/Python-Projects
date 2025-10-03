@@ -1,3 +1,4 @@
+import pickle
 # Busisness Logic Layer
 
 id_list=[]
@@ -55,6 +56,26 @@ def modify_Customer(id,name,age,mob):
     mob_list[i]=mob
     return
 
+def save_to_pickle():
+    data = {
+        'id_list':id_list,
+        'name_list':name_list,
+        'age_list':age_list,
+        'mob_list':mob_list
+    }
+
+    with open('customers.pkl','wb') as f:
+        pickle.dump(data,f)
+
+def load_from_pickle():
+    global id_list, name_list, age_list, mob_list
+    with open('customers.pkl','rb') as f:
+        data=pickle.load(f)
+        id_list=data['id_list']
+        name_list=data['name_list']
+        age_list=data['age_list']
+        mob_list=data['mob_list']
+
 # Presentation Layer
 print('Welcome to Customer Management System')
 
@@ -87,7 +108,7 @@ def get_Mob():
 
 
 while(1):
-    ch=input('Enter Choice : 1.add_customer 2.search_customer 3.delete_customer 4.modify_customer 5.view_all_customers 6.exit: ')
+    ch=input('Enter Choice : 1.add_customer 2.search_customer 3.delete_customer 4.modify_customer 5.view_all_customers 6.save 7.load 8.exit: ')
     if ch=='1':
         # id=input('Enter Customer ID: ')
         id=get_Id()
@@ -150,6 +171,14 @@ while(1):
             show_Customer(i)
     
     elif ch=='6':
+        save_to_pickle()
+        print('Save To Pickle')
+    
+    elif ch=='7':
+        load_from_pickle()
+        print('Load From Pickle')
+    
+    elif ch=='8':
         print('Thank You for using Customer Management System')
         break
     
