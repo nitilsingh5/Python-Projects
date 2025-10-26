@@ -1,5 +1,5 @@
 # Customer Management System
-
+import pickle
 # Buisness Logic Layer
 class Customer:
     cus_list=[]
@@ -30,8 +30,14 @@ class Customer:
                 cus.name=self.name
                 cus.age=self.age
                 cus.mob=self.mob
-        
-
+    
+    def save_to_pickle():
+        f=open(r'C:\Users\nitil\OneDrive\Desktop\Study\Python\Project\Python Projects\Customer Management System\cus_list.txt','wb')
+        pickle.dump(Customer.cus_list,f)
+    
+    def load_from_pickle():
+        f=open(r'C:\Users\nitil\OneDrive\Desktop\Study\Python\Project\Python Projects\Customer Management System\cus_list.txt','rb')
+        Customer.cus_list=pickle.load(f)
 
 # Presentation Layer
 if __name__=="__main__":
@@ -40,7 +46,7 @@ if __name__=="__main__":
         print('Cust ID:',cus.id,'Cust Name:',cus.name,'Cust Age:',cus.age,'Cust Mob:',cus.mob)
 
     while(1):
-        ch=input('Enter Choice: 1.Add Customer, 2.Search Customer, 3.Delete Customer, 4.Modify Customer, 5.View All Customer, 6.exit: ')
+        ch=input('Enter Choice: 1.Add Customer, 2.Search Customer, 3.Delete Customer, 4.Modify Customer, 5.View All Customer, 6.save_to_pickle, 7.load_from_pickle, 8.exit: ')
         if ch=='1':
             cus=Customer()
             cus.id=input('Enter Customer ID: ')
@@ -76,6 +82,13 @@ if __name__=="__main__":
                 show_Customer(cus)
         
         elif ch=='6':
+            Customer.save_to_pickle()
+            print('Saved to Pickle')
+        
+        elif ch=='7':
+            Customer.load_from_pickle()
+            print('loaded from pickle')
+        elif ch=='8':
             print('Thank You for using Customer Management System')
             break
         
