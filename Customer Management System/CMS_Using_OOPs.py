@@ -1,5 +1,6 @@
 # Customer Management System
 import pickle
+import json
 # Buisness Logic Layer
 class Customer:
     cus_list=[]
@@ -31,13 +32,44 @@ class Customer:
                 cus.age=self.age
                 cus.mob=self.mob
     
+    @staticmethod
     def save_to_pickle():
         f=open(r'C:\Users\nitil\OneDrive\Desktop\Study\Python\Project\Python Projects\Customer Management System\cus_list.txt','wb')
         pickle.dump(Customer.cus_list,f)
     
+    @staticmethod
     def load_from_pickle():
         f=open(r'C:\Users\nitil\OneDrive\Desktop\Study\Python\Project\Python Projects\Customer Management System\cus_list.txt','rb')
         Customer.cus_list=pickle.load(f)
+    
+    @staticmethod
+    def obj_to_dict(cus):
+        return cus.__dict__
+    @staticmethod
+    def save_to_json():
+        f=open(r'C:\Users\nitil\OneDrive\Desktop\Study\Python\Project\Python Projects\Customer Management System\cus_list.txt','w')
+        json.dump(Customer.cus_list,f,default=Customer.obj_to_dict)
+    
+    @staticmethod
+    def dict_to_obj(d):
+        cus=Customer()
+        cus.id=d['id']
+        cus.name=d['name']
+        cus.age=d['age']
+        cus.mob=d['mob']
+        return cus
+    @staticmethod
+    def load_from_json():
+        f=open(r'C:\Users\nitil\OneDrive\Desktop\Study\Python\Project\Python Projects\Customer Management System\cus_list.txt','r')
+        Customer.cus_list=json.load(f,object_hook=Customer.dict_to_obj)
+    
+    @staticmethod
+    def sort_criteria(cus):
+        return cus.id
+
+    @staticmethod
+    def sort_by_id():
+        Customer.cus_list.sort(key=Customer.sort_criteria)
 
 # Presentation Layer
 if __name__=="__main__":
@@ -46,7 +78,7 @@ if __name__=="__main__":
         print('Cust ID:',cus.id,'Cust Name:',cus.name,'Cust Age:',cus.age,'Cust Mob:',cus.mob)
 
     while(1):
-        ch=input('Enter Choice: 1.Add Customer, 2.Search Customer, 3.Delete Customer, 4.Modify Customer, 5.View All Customer, 6.save_to_pickle, 7.load_from_pickle, 8.exit: ')
+        ch=input('Enter Choice: 1.Add Customer, 2.Search Customer, 3.Delete Customer, 4.Modify Customer, 5.View All Customer, 6.save_to_pickle, 7.load_from_pickle, 8.save_to_json, 9.load_from_json, 10.sort, 11.exit: ')
         if ch=='1':
             cus=Customer()
             cus.id=input('Enter Customer ID: ')
@@ -88,7 +120,20 @@ if __name__=="__main__":
         elif ch=='7':
             Customer.load_from_pickle()
             print('loaded from pickle')
+        
         elif ch=='8':
+            Customer.save_to_json()
+            print('Saved to Json')
+        
+        elif ch=='9':
+            Customer.load_from_json()
+            print('loaded from Json')
+        
+        elif ch=='10':
+            Customer.sort_by_id()
+            print('sorted')
+        
+        elif ch=='11':
             print('Thank You for using Customer Management System')
             break
         
